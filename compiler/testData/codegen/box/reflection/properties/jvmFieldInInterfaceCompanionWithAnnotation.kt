@@ -2,20 +2,21 @@
 // TARGET_BACKEND: JVM
 // WITH_RUNTIME
 // WITH_REFLECT
+
 import kotlin.reflect.full.declaredMemberProperties
+
+annotation class Ann(val value: String)
 
 public class Bar(public val value: String)
 
-class Foo {
-
+interface Foo {
     companion object {
-        @JvmField
-        val z = Bar("OK")
+        @JvmField @Ann("O")
+        val FOO = Bar("K")
     }
 }
 
-
 fun box(): String {
     val field = Foo.Companion::class.declaredMemberProperties.single()
-    return (field.get(Foo.Companion) as Bar).value
+    return (field.annotations.single() as Ann).value + (field.get(Foo.Companion) as Bar).value
 }

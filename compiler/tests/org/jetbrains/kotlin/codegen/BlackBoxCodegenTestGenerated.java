@@ -11940,14 +11940,12 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
 
         @TestMetadata("annotationCompanion.kt")
         public void testAnnotationCompanion() throws Exception {
-            String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/jvmField/annotationCompanion.kt");
-            doTest(fileName);
+            runTest("compiler/testData/codegen/box/jvmField/annotationCompanion.kt");
         }
 
         @TestMetadata("annotationCompanionWithJava.kt")
         public void testAnnotationCompanionWithJava() throws Exception {
-            String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/jvmField/annotationCompanionWithJava.kt");
-            doTest(fileName);
+            runTest("compiler/testData/codegen/box/jvmField/annotationCompanionWithJava.kt");
         }
 
         @TestMetadata("captureClassFields.kt")
@@ -11982,25 +11980,17 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
 
         @TestMetadata("interfaceCompanion.kt")
         public void testInterfaceCompanion() throws Exception {
-            String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/jvmField/interfaceCompanion.kt");
-            doTest(fileName);
+            runTest("compiler/testData/codegen/box/jvmField/interfaceCompanion.kt");
         }
 
         @TestMetadata("interfaceCompanionWithJava.kt")
         public void testInterfaceCompanionWithJava() throws Exception {
-            String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/jvmField/interfaceCompanionWithJava.kt");
-            doTest(fileName);
+            runTest("compiler/testData/codegen/box/jvmField/interfaceCompanionWithJava.kt");
         }
 
         @TestMetadata("publicField.kt")
         public void testPublicField() throws Exception {
             runTest("compiler/testData/codegen/box/jvmField/publicField.kt");
-        }
-
-        @TestMetadata("reflectionInInterface.kt")
-        public void testReflectionInInterface() throws Exception {
-            String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/jvmField/reflectionInInterface.kt");
-            doTest(fileName);
         }
 
         @TestMetadata("simpleMemberProperty.kt")
@@ -17718,8 +17708,7 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
 
             @TestMetadata("interfaceCompanionPropertyWithJvmField.kt")
             public void testInterfaceCompanionPropertyWithJvmField() throws Exception {
-                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/reflection/mapping/interfaceCompanionPropertyWithJvmField.kt");
-                doTest(fileName);
+                runTest("compiler/testData/codegen/box/reflection/mapping/interfaceCompanionPropertyWithJvmField.kt");
             }
 
             @TestMetadata("mappedClassIsEqualToClassLiteral.kt")
@@ -18264,8 +18253,7 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
 
             @TestMetadata("boundJvmFieldInInterfaceCompanion.kt")
             public void testBoundJvmFieldInInterfaceCompanion() throws Exception {
-                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/reflection/properties/boundJvmFieldInInterfaceCompanion.kt");
-                doTest(fileName);
+                runTest("compiler/testData/codegen/box/reflection/properties/boundJvmFieldInInterfaceCompanion.kt");
             }
 
             @TestMetadata("callPrivatePropertyFromGetProperties.kt")
@@ -18323,10 +18311,19 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
                 runTest("compiler/testData/codegen/box/reflection/properties/javaStaticField.kt");
             }
 
+            @TestMetadata("jvmFieldInAnnotationCompanionWithAnnotation.kt")
+            public void testJvmFieldInAnnotationCompanionWithAnnotation() throws Exception {
+                runTest("compiler/testData/codegen/box/reflection/properties/jvmFieldInAnnotationCompanionWithAnnotation.kt");
+            }
+
             @TestMetadata("jvmFieldInInterfaceCompanion.kt")
             public void testJvmFieldInInterfaceCompanion() throws Exception {
-                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/codegen/box/reflection/properties/jvmFieldInInterfaceCompanion.kt");
-                doTest(fileName);
+                runTest("compiler/testData/codegen/box/reflection/properties/jvmFieldInInterfaceCompanion.kt");
+            }
+
+            @TestMetadata("jvmFieldInInterfaceCompanionWithAnnotation.kt")
+            public void testJvmFieldInInterfaceCompanionWithAnnotation() throws Exception {
+                runTest("compiler/testData/codegen/box/reflection/properties/jvmFieldInInterfaceCompanionWithAnnotation.kt");
             }
 
             @TestMetadata("kotlinPropertyInheritedInJava.kt")

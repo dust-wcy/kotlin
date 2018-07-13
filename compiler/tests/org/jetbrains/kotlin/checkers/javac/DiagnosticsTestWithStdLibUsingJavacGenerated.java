@@ -558,8 +558,7 @@ public class DiagnosticsTestWithStdLibUsingJavacGenerated extends AbstractDiagno
 
             @TestMetadata("interface13.kt")
             public void testInterface13() throws Exception {
-                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithStdLib/annotations/jvmField/interface13.kt");
-                doTest(fileName);
+                runTest("compiler/testData/diagnostics/testsWithStdLib/annotations/jvmField/interface13.kt");
             }
 
             @TestMetadata("jvmFieldApplicability.kt")

@@ -7,7 +7,7 @@ import kotlin.reflect.full.companionObject
 
 class Bar(val value: String)
 
-class Foo {
+interface Foo {
 
     companion object {
         @JvmField

@@ -16491,6 +16491,11 @@ public class IrJsCodegenBoxTestGenerated extends AbstractIrJsCodegenBoxTest {
                 runTest("compiler/testData/codegen/box/reflection/properties/allVsDeclared.kt");
             }
 
+            @TestMetadata("boundJvmFieldInInterfaceCompanion.kt")
+            public void testBoundJvmFieldInInterfaceCompanion() throws Exception {
+                runTest("compiler/testData/codegen/box/reflection/properties/boundJvmFieldInInterfaceCompanion.kt");
+            }
+
             @TestMetadata("callPrivatePropertyFromGetProperties.kt")
             public void testCallPrivatePropertyFromGetProperties() throws Exception {
                 runTest("compiler/testData/codegen/box/reflection/properties/callPrivatePropertyFromGetProperties.kt");
@@ -16544,6 +16549,11 @@ public class IrJsCodegenBoxTestGenerated extends AbstractIrJsCodegenBoxTest {
             @TestMetadata("javaStaticField.kt")
             public void testJavaStaticField() throws Exception {
                 runTest("compiler/testData/codegen/box/reflection/properties/javaStaticField.kt");
+            }
+
+            @TestMetadata("jvmFieldInInterfaceCompanion.kt")
+            public void testJvmFieldInInterfaceCompanion() throws Exception {
+                runTest("compiler/testData/codegen/box/reflection/properties/jvmFieldInInterfaceCompanion.kt");
             }
 
             @TestMetadata("kotlinPropertyInheritedInJava.kt")

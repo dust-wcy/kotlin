@@ -5,7 +5,7 @@ import kotlin.reflect.full.memberProperties
 
 class Bar(val value: String)
 
-class Foo {
+interface  Foo {
 
     companion object {
         @JvmField
@@ -15,6 +15,6 @@ class Foo {
 
 
 fun box(): String {
-    val field = Foo.Companion::class.memberProperties.single()
-    return (field.get(Foo.Companion) as Bar).value
+    val field = Foo.Companion::z
+    return field.get().value
 }
