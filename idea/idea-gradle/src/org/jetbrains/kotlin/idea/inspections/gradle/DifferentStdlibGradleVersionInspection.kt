@@ -50,7 +50,7 @@ class DifferentStdlibGradleVersionInspection : GradleBaseInspection() {
             if (dependenciesCall.parent !is PsiFile) return
 
             val stdlibStatement = findLibraryStatement(closure, "org.jetbrains.kotlin", libraryIds) ?: return
-            val stdlibVersion = getResolvedKotlinStdlibVersion(closure.containingFile, groupId, libraryIds) ?: return
+            val stdlibVersion = getResolvedLibVersion(closure.containingFile, groupId, libraryIds) ?: return
 
             onFound(stdlibVersion, stdlibStatement)
         }
@@ -73,7 +73,7 @@ class DifferentStdlibGradleVersionInspection : GradleBaseInspection() {
             }
         }
 
-        fun getResolvedKotlinStdlibVersion(file: PsiFile, groupId: String, libraryIds: List<String>): String? {
+        fun getResolvedLibVersion(file: PsiFile, groupId: String, libraryIds: List<String>): String? {
             val projectStructureNode = findGradleProjectStructure(file) ?: return null
             val module = ProjectRootManager.getInstance(file.project).fileIndex.getModuleForFile(file.virtualFile) ?: return null
 
