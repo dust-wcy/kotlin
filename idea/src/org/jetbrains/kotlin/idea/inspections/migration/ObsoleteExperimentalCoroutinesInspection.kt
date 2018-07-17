@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 
-class ObsoleteExperimentalCoroutinesInspection : AbstractKotlinInspection(), CleanupLocalInspectionTool {
+class ObsoleteExperimentalCoroutinesInspection : AbstractKotlinInspection(), CleanupLocalInspectionTool{
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): KtVisitorVoid {
         return simpleNameExpressionVisitor(fun(simpleNameExpression) {
             run {
@@ -55,7 +55,7 @@ class ObsoleteExperimentalCoroutinesInspection : AbstractKotlinInspection(), Cle
                         "Methods are absent in coroutines class since 1.3",
                         ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
                         isOnTheFly,
-                        ImportExtensionFunctionFix(fixFqName)
+                        ObsoleteCoroutineUsageFix.createExtensionFix(fixFqName)
                     )
 
                     holder.registerProblem(problemDescriptor)
@@ -73,7 +73,7 @@ class ObsoleteExperimentalCoroutinesInspection : AbstractKotlinInspection(), Cle
                         "Experimental coroutines usages are obsolete since 1.3",
                         ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
                         isOnTheFly,
-                        ObsoleteCoroutineImportFix()
+                        ObsoleteCoroutineUsageFix.createImportFix()
                     )
 
                     holder.registerProblem(problemDescriptor)
@@ -129,43 +129,56 @@ class ObsoleteExperimentalCoroutinesInspection : AbstractKotlinInspection(), Cle
         }
     }
 
-    private class ObsoleteCoroutineImportFix : LocalQuickFix {
-        override fun getFamilyName() = QUICK_FIX_NAME
+    private class ObsoleteCoroutineUsageFix(val delegate: LocalQuickFix) : LocalQuickFix {
+        override fun getFamilyName(): String = "Fix experimental coroutines usage"
 
         override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-            val element = descriptor.psiElement
-            val simpleNameExpression = when (element) {
-                is KtSimpleNameExpression -> element
-                is KtDotQualifiedExpression -> element.selectorExpression as? KtSimpleNameExpression
-                else -> null
-            } ?: return
-
-            val binding = ObsoleteExperimentalCoroutinesInspection.findBinding(simpleNameExpression) ?: return
-
-            if (binding.shouldRemove) {
-                binding.importDirective.delete()
-            } else {
-                simpleNameExpression.mainReference.bindToFqName(
-                    binding.bindTo, shorteningMode = KtSimpleNameReference.ShorteningMode.NO_SHORTENING
-                )
-            }
+            delegate.applyFix(project, descriptor)
         }
-    }
 
-    private class ImportExtensionFunctionFix(val fqName: String) : LocalQuickFix {
-        override fun getFamilyName() = QUICK_FIX_NAME
+        companion object {
+            fun createImportFix() = ObsoleteCoroutineUsageFix(ObsoleteCoroutineImportFix())
+            fun createExtensionFix(fqName: String) = ImportExtensionFunctionFix(fqName)
 
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-            val element = descriptor.psiElement
-            element as? KtSimpleNameExpression ?: return
+            private class ObsoleteCoroutineImportFix : LocalQuickFix {
+                override fun getFamilyName() = QUICK_FIX_NAME
 
-            val importFun =
-                KotlinTopLevelFunctionFqnNameIndex.getInstance().get(fqName, element.project, GlobalSearchScope.allScope(element.project))
-                    .asSequence()
-                    .map { it.resolveToDescriptorIfAny() }
-                    .find { it != null && it.importableFqName?.asString() == fqName } ?: return
+                override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+                    val element = descriptor.psiElement
+                    val simpleNameExpression = when (element) {
+                        is KtSimpleNameExpression -> element
+                        is KtDotQualifiedExpression -> element.selectorExpression as? KtSimpleNameExpression
+                        else -> null
+                    } ?: return
 
-            ImportInsertHelper.getInstance(element.project).importDescriptor(element.containingKtFile, importFun, false)
+                    val binding = ObsoleteExperimentalCoroutinesInspection.findBinding(simpleNameExpression) ?: return
+
+                    if (binding.shouldRemove) {
+                        binding.importDirective.delete()
+                    } else {
+                        simpleNameExpression.mainReference.bindToFqName(
+                            binding.bindTo, shorteningMode = KtSimpleNameReference.ShorteningMode.NO_SHORTENING
+                        )
+                    }
+                }
+            }
+
+            private class ImportExtensionFunctionFix(val fqName: String) : LocalQuickFix {
+                override fun getFamilyName() = QUICK_FIX_NAME
+
+                override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+                    val element = descriptor.psiElement
+                    element as? KtSimpleNameExpression ?: return
+
+                    val importFun =
+                        KotlinTopLevelFunctionFqnNameIndex.getInstance().get(fqName, element.project, GlobalSearchScope.allScope(element.project))
+                            .asSequence()
+                            .map { it.resolveToDescriptorIfAny() }
+                            .find { it != null && it.importableFqName?.asString() == fqName } ?: return
+
+                    ImportInsertHelper.getInstance(element.project).importDescriptor(element.containingKtFile, importFun, false)
+                }
+            }
         }
     }
 }
