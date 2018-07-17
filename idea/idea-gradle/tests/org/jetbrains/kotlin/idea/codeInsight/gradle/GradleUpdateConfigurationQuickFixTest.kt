@@ -71,6 +71,11 @@ class GradleUpdateConfigurationQuickFixTest : GradleImportingTestCase() {
         doTest("Add kotlin-reflect.jar to the classpath")
     }
 
+    @Test
+    fun testUpdateKotlinxCoroutines() {
+        doTest("Library should be updated to be compatible with Kotlin 1.3")
+    }
+
     private fun doTest(intentionName: String) {
         val buildGradleVFile = createProjectSubFile("build.gradle", File(getTestDataPath(), "build.gradle").readText())
         val sourceVFile = createProjectSubFile("src/main/kotlin/src.kt", File(getTestDataPath(), "src.kt").readText())
