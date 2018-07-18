@@ -155,6 +155,7 @@ class Kapt3KotlinGradleSubplugin : KotlinGradleSubplugin<KotlinCompile> {
         val project: Project,
         val kotlinCompile: KotlinCompile,
         val javaCompile: AbstractCompile,
+        val isAndroidProject: Boolean,
         val kaptVariantData: KaptVariantData<*>?,
         val sourceSetName: String,
         val javaSourceSet: SourceSet?,
@@ -207,7 +208,7 @@ class Kapt3KotlinGradleSubplugin : KotlinGradleSubplugin<KotlinCompile> {
         val nonEmptyKaptConfigurations = kaptConfigurations.filter { it.dependencies.isNotEmpty() }
 
         val context = Kapt3SubpluginContext(
-            project, kotlinCompile, javaCompile,
+            project, kotlinCompile, javaCompile, androidProjectHandler != null,
             kaptVariantData, sourceSetName, javaSourceSet, kaptExtension, nonEmptyKaptConfigurations
         )
 
@@ -385,6 +386,7 @@ class Kapt3KotlinGradleSubplugin : KotlinGradleSubplugin<KotlinCompile> {
 
         if (kaptTask is KaptWithoutKotlincTask) {
             with(kaptTask) {
+                isAndroidProject = this@createKaptKotlinTask.isAndroidProject
                 isVerbose = project.isKaptVerbose()
                 mapDiagnosticLocations = kaptExtension.mapDiagnosticLocations
                 annotationProcessorFqNames = kaptExtension.processors.split(',').filter { it.isNotEmpty() }
