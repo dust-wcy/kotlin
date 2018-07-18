@@ -40,7 +40,7 @@ abstract class AbstractIncrementalLazyCachesTest : AbstractIncrementalJpsTest() 
 
     override fun setUp() {
         super.setUp()
-        isICEnabledBackup = IncrementalCompilation.isEnabled()
+        isICEnabledBackup = IncrementalCompilation.isEnabledForJvm()
         IncrementalCompilation.setIsEnabled(true)
     }
 
